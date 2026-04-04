@@ -1,0 +1,160 @@
+[
+  {
+    "name": "azru.cloud",
+    "url": "https://azru.cloud",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "azru-cloud",
+    "status": "up",
+    "uptime": "100.00%",
+    "uptimeDay": "100.00%",
+    "uptimeWeek": "100.00%",
+    "uptimeMonth": "100.00%",
+    "uptimeYear": "100.00%",
+    "time": 69,
+    "timeDay": 69,
+    "timeWeek": 69,
+    "timeMonth": 69,
+    "timeYear": 69,
+    "dailyMinutesDown": {}
+  },
+  {
+    "name": "pebble.azru.cloud",
+    "url": "https://pebble.azru.cloud",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "pebble-azru-cloud",
+    "status": "down",
+    "uptime": "58.65%",
+    "uptimeDay": "58.65%",
+    "uptimeWeek": "58.65%",
+    "uptimeMonth": "58.65%",
+    "uptimeYear": "58.65%",
+    "time": 84,
+    "timeDay": 84,
+    "timeWeek": 84,
+    "timeMonth": 84,
+    "timeYear": 84,
+    "dailyMinutesDown": {
+      "2026-04-04": 183
+    }
+  },
+  {
+    "name": "API",
+    "url": "https://pebble.azru.cloud/api/v1/health/ping",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "api",
+    "status": "down",
+    "uptime": "58.65%",
+    "uptimeDay": "58.65%",
+    "uptimeWeek": "58.65%",
+    "uptimeMonth": "58.65%",
+    "uptimeYear": "58.65%",
+    "time": 7,
+    "timeDay": 7,
+    "timeWeek": 7,
+    "timeMonth": 7,
+    "timeYear": 7,
+    "dailyMinutesDown": {
+      "2026-04-04": 183
+    }
+  },
+  {
+    "name": "Keystone (Identity)",
+    "url": "https://pebble.azru.cloud/api/v1/status/keystone",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "keystone-identity",
+    "status": "down",
+    "uptime": "50.26%",
+    "uptimeDay": "50.26%",
+    "uptimeWeek": "50.26%",
+    "uptimeMonth": "50.26%",
+    "uptimeYear": "50.26%",
+    "time": 6,
+    "timeDay": 6,
+    "timeWeek": 6,
+    "timeMonth": 6,
+    "timeYear": 6,
+    "dailyMinutesDown": {
+      "2026-04-04": 220
+    }
+  },
+  {
+    "name": "Nova (Compute)",
+    "url": "https://pebble.azru.cloud/api/v1/status/nova",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "nova-compute",
+    "status": "down",
+    "uptime": "50.25%",
+    "uptimeDay": "50.25%",
+    "uptimeWeek": "50.25%",
+    "uptimeMonth": "50.25%",
+    "uptimeYear": "50.25%",
+    "time": 6,
+    "timeDay": 6,
+    "timeWeek": 6,
+    "timeMonth": 6,
+    "timeYear": 6,
+    "dailyMinutesDown": {
+      "2026-04-04": 220
+    }
+  },
+  {
+    "name": "Neutron (Network)",
+    "url": "https://pebble.azru.cloud/api/v1/status/neutron",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "neutron-network",
+    "status": "down",
+    "uptime": "50.26%",
+    "uptimeDay": "50.26%",
+    "uptimeWeek": "50.26%",
+    "uptimeMonth": "50.26%",
+    "uptimeYear": "50.26%",
+    "time": 7,
+    "timeDay": 7,
+    "timeWeek": 7,
+    "timeMonth": 7,
+    "timeYear": 7,
+    "dailyMinutesDown": {
+      "2026-04-04": 220
+    }
+  },
+  {
+    "name": "Glance (Images)",
+    "url": "https://pebble.azru.cloud/api/v1/status/glance",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "glance-images",
+    "status": "down",
+    "uptime": "50.26%",
+    "uptimeDay": "50.26%",
+    "uptimeWeek": "50.26%",
+    "uptimeMonth": "50.26%",
+    "uptimeYear": "50.26%",
+    "time": 8,
+    "timeDay": 8,
+    "timeWeek": 8,
+    "timeMonth": 8,
+    "timeYear": 8,
+    "dailyMinutesDown": {
+      "2026-04-04": 220
+    }
+  },
+  {
+    "name": "Cinder (Volumes)",
+    "url": "https://pebble.azru.cloud/api/v1/status/cinder",
+    "icon": "https://azru.cloud/static/img/azru-favicon.svg",
+    "slug": "cinder-volumes",
+    "status": "down",
+    "uptime": "50.26%",
+    "uptimeDay": "50.26%",
+    "uptimeWeek": "50.26%",
+    "uptimeMonth": "50.26%",
+    "uptimeYear": "50.26%",
+    "time": 6,
+    "timeDay": 6,
+    "timeWeek": 6,
+    "timeMonth": 6,
+    "timeYear": 6,
+    "dailyMinutesDown": {
+      "2026-04-04": 220
+    }
+  }
+]
