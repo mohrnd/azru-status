@@ -473,7 +473,177 @@ status-website:
       ::-webkit-scrollbar-track { background: var(--bg); }
       ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
       ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+      /* ── 90-day uptime bars ── */
+      .azru-uptime-bars {
+        margin: 10px 0 6px;
+      }
+      .azru-bars-track {
+        display: flex;
+        gap: 2px;
+        height: 32px;
+        align-items: stretch;
+      }
+      .azru-bar {
+        flex: 1 1 0;
+        border-radius: 2px;
+        cursor: default;
+        position: relative;
+        transition: filter 0.1s, transform 0.1s;
+      }
+      .azru-bar:hover {
+        filter: brightness(1.4);
+        transform: scaleY(1.08);
+        z-index: 1;
+      }
+      .azru-bar.up   { background: #22d3a0; opacity: 0.75; }
+      .azru-bar.partial { background: #f5a623; opacity: 0.9; }
+      .azru-bar.down { background: #f04040; opacity: 0.9; }
+      .azru-bar.empty { background: #2a2a30; opacity: 1; }
+      .azru-bars-labels {
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 5px;
+      }
+      .azru-bars-labels span:last-child {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .azru-uptime-pct {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 600;
+        color: #22d3a0;
+      }
+      /* Tooltip */
+      .azru-bar::after {
+        content: attr(data-tip);
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #19191c;
+        border: 1px solid #333338;
+        color: #a0a0a8;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 10px;
+        padding: 3px 7px;
+        border-radius: 3px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.12s;
+        z-index: 99;
+      }
+      .azru-bar:hover::after { opacity: 1; }
     </style>
+    <script>
+    (function() {
+      const OWNER = 'mohrnd';
+      const REPO  = 'azru-status';
+      const DAYS  = 90;
+
+      function isoDate(d) {
+        return d.toISOString().slice(0, 10);
+      }
+
+      function buildDays(dailyMinutesDown) {
+        const today = new Date();
+        const result = [];
+        for (let i = DAYS - 1; i >= 0; i--) {
+          const d = new Date(today);
+          d.setDate(d.getDate() - i);
+          const key = isoDate(d);
+          const mins = dailyMinutesDown[key] ?? 0;
+          let cls = 'up';
+          if (mins > 240)   cls = 'down';
+          else if (mins > 0) cls = 'partial';
+          result.push({ date: key, mins, cls });
+        }
+        return result;
+      }
+
+      function uptimePct(days) {
+        const totalMins = DAYS * 24 * 60;
+        const downMins  = days.reduce((s, d) => s + (d.mins || 0), 0);
+        return ((totalMins - downMins) / totalMins * 100).toFixed(2);
+      }
+
+      function renderBars(container, days) {
+        const pct = uptimePct(days);
+        const el  = document.createElement('div');
+        el.className = 'azru-uptime-bars';
+
+        const track = document.createElement('div');
+        track.className = 'azru-bars-track';
+
+        days.forEach(day => {
+          const bar = document.createElement('div');
+          bar.className = 'azru-bar ' + day.cls;
+          let tip = day.date;
+          if (day.mins > 0) tip += ' · ' + day.mins + 'm down';
+          else tip += ' · operational';
+          bar.setAttribute('data-tip', tip);
+          track.appendChild(bar);
+        });
+
+        const labels = document.createElement('div');
+        labels.className = 'azru-bars-labels';
+        labels.innerHTML =
+          '<span>' + DAYS + ' days ago</span>' +
+          '<span>' +
+            '<span class="azru-uptime-pct">' + pct + '% uptime</span>' +
+            '&nbsp;·&nbsp;today' +
+          '</span>';
+
+        el.appendChild(track);
+        el.appendChild(labels);
+        container.appendChild(el);
+      }
+
+      function injectBars(summaryData) {
+        // Map slug -> dailyMinutesDown
+        const bySlug = {};
+        summaryData.forEach(s => { bySlug[s.slug] = s.dailyMinutesDown || {}; });
+
+        // Upptime renders articles inside section.live-status
+        // Each article has an <a> child linking to /{slug}
+        function tryInject() {
+          const articles = document.querySelectorAll('section.live-status article');
+          if (!articles.length) return false;
+          articles.forEach(art => {
+            if (art.querySelector('.azru-uptime-bars')) return; // already done
+            const link = art.querySelector('a[href]');
+            if (!link) return;
+            const slug = link.getAttribute('href').replace(/^\//, '').split('/')[0];
+            const dmDown = bySlug[slug];
+            if (dmDown === undefined) return;
+            const days = buildDays(dmDown);
+            renderBars(art, days);
+          });
+          return true;
+        }
+
+        if (!tryInject()) {
+          // Svelte renders async — observe DOM mutations
+          const obs = new MutationObserver(() => {
+            if (tryInject()) obs.disconnect();
+          });
+          obs.observe(document.body, { childList: true, subtree: true });
+        }
+      }
+
+      // Fetch summary from GitHub raw
+      fetch('https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/master/history/summary.json')
+        .then(r => r.json())
+        .then(injectBars)
+        .catch(console.error);
+    })();
+    </script>
 
   i18n:
     activeIncidents: "Active incidents"
