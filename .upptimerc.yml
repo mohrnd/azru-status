@@ -3,6 +3,28 @@
 owner: mohrnd
 repo: azru-status
 
+# ── Assignees ─────────────────────────────────────────────────────────────────
+assignees:
+  - mohrnd
+
+# ── Commit messages ───────────────────────────────────────────────────────────
+commitMessages:
+  readmeContent: "📋 Update summary in README [skip ci] [upptime]"
+  createIssue: "🔴 {{ monitorName }} is down"
+  closeIssue: "✅ {{ monitorName }} is back up"
+  statusChange: "🟡 {{ monitorName }} degraded to {{ status }}"
+  graphsUpdate: "📈 Update graphs [skip ci] [upptime]"
+  responseTime: "⏱ Update response time [skip ci] [upptime]"
+  staticSiteUpdate: "🚀 Deploy static site [skip ci] [upptime]"
+  summaryUpdate: "📊 Update summary [skip ci] [upptime]"
+  updateTemplate: "🔧 Update Upptime template [skip ci] [upptime]"
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+skipDeletedSites: true
+delay: 0
+userAgent: Upptime/1.0
+maxResponseTime: 60000
+
 # ── Services ──────────────────────────────────────────────────────────────────
 sites:
 
@@ -61,9 +83,11 @@ sites:
     maxResponseTime: 45000
 
 # ── Schedule ──────────────────────────────────────────────────────────────────
-# Monitoring window: 10:00–21:00 France time (UTC+2)
-# → 08:00–19:00 UTC
-
+# Monitoring window: 10:00–21:00 UTC+2 (CEST / France summer time)
+#   10:00 UTC+2 = 08:00 UTC  →  start hour 8
+#   21:00 UTC+2 = 19:00 UTC  →  last allowed run starts at 18:xx UTC
+#   (hour 19 would run up to 19:57 UTC = 21:57 UTC+2, past the 9 PM cutoff)
+#   So we cap at hour 18: last check at 18:57 UTC = 20:57 UTC+2 ✓
 workflowSchedule:
   uptime: "*/3 8-18 * * *"
   graphs: "0 18 * * *"
@@ -74,130 +98,388 @@ workflowSchedule:
   updates: "0 3 * * *"
 
 # ── Status page ───────────────────────────────────────────────────────────────
-
 status-website:
-
   cname: status.azru.cloud
   name: AZRU Status
   logoUrl: https://raw.githubusercontent.com/mohrnd/azru-status/master/assets/azru-logo.svg
-
   introTitle: "AZRU Platform Status"
-
-  introMessage: >
-    Real-time status for the AZRU cloud platform.
-    Monitoring runs daily from 10:00 to 21:00 (UTC+2).
+  introMessage: "Real-time status for the AZRU cloud platform. Monitored automatically via GitHub Actions."
+  navbar:
+    - title: AZRU Cloud
+      href: https://azru.cloud
 
   customHeadHtml: |
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="https://azru.cloud/static/img/azru-favicon.svg">
     <style>
+      /* ── AZRU Design System ── */
+      :root {
+        --bg:             #0a0a0b;
+        --bg-surface:     #111113;
+        --bg-elevated:    #19191c;
+        --border:         #222226;
+        --border-hover:   #333338;
+        --border-active:  #6c63ff;
+        --border-subtle:  #16161a;
+        --text:           #ffffff;
+        --text-secondary: #a0a0a8;
+        --text-muted:     #505058;
+        --accent:         #6c63ff;
+        --accent-hover:   #8b84ff;
+        --accent-glow:    rgba(108,99,255,0.12);
+        --success:        #22d3a0;
+        --warning:        #f5a623;
+        --danger:         #f04040;
+        --font-sans:      'Geist', system-ui, -apple-system, sans-serif;
+        --font-mono:      'IBM Plex Mono', 'Courier New', monospace;
+        --radius:         6px;
+        --radius-sm:      4px;
+        --radius-xs:      3px;
+      }
 
-    :root {
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-font-smoothing: antialiased; }
 
-      --bg: #0a0a0b;
-      --bg-surface: #111113;
-      --border: #222226;
+      body {
+        background: var(--bg) !important;
+        color: var(--text) !important;
+        font-family: var(--font-sans) !important;
+        font-size: 14px;
+        line-height: 1.6;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
 
-      --text: #ffffff;
-      --text-secondary: #a0a0a8;
+      /* ── Grid background ── */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+        background-size: 80px 80px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      /* Purple glow top-left */
+      body::after {
+        content: '';
+        position: fixed;
+        top: -200px;
+        left: -200px;
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(ellipse, rgba(108,99,255,.16) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      body > * { position: relative; z-index: 1; }
 
-      --success: #22d3a0;
-      --warning: #f5a623;
-      --danger: #f04040;
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { color: var(--accent-hover); }
 
-      --font-sans: 'Geist', system-ui, sans-serif;
-      --font-mono: 'IBM Plex Mono', monospace;
+      /* ── Nav / Header ── */
+      header, nav,
+      [class*="navbar"], [class*="header"],
+      .navbar, .header {
+        background: rgba(10,10,11,.88) !important;
+        backdrop-filter: blur(12px) !important;
+        border-bottom: 1px solid rgba(255,255,255,.05) !important;
+        font-family: var(--font-sans) !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 50 !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 24px !important;
+        height: 52px !important;
+      }
 
-    }
+      /* ── Logo image ── */
+      nav img[src*="azru-logo"],
+      header img[src*="azru-logo"],
+      [class*="logo"] img,
+      nav img, header img {
+        height: 24px !important;
+        width: auto !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+        margin-right: 10px !important;
+        flex-shrink: 0 !important;
+      }
 
-    body {
+      /* Site name text next to logo */
+      [class*="logo"] span,
+      [class*="site-name"],
+      nav span, header span {
+        font-family: var(--font-sans) !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.03em !important;
+        color: var(--text) !important;
+        vertical-align: middle !important;
+      }
 
-      background: var(--bg) !important;
-      color: var(--text) !important;
+      /* ── Service icons — hidden ── */
+      [class*="monitor"] img,
+      [class*="service"] img,
+      [class*="status-item"] img,
+      article img {
+        display: none !important;
+      }
 
-      font-family: var(--font-sans) !important;
+      /* ── Page wrapper ── */
+      main, .container, [class*="container"] {
+        background: transparent !important;
+        max-width: 860px !important;
+        margin: 0 auto !important;
+        padding: 40px 24px !important;
+      }
 
-    }
+      /* ── Typography ── */
+      h1 {
+        font-family: var(--font-sans) !important;
+        font-size: 1.75rem !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.04em !important;
+        color: var(--text) !important;
+        margin-bottom: 6px !important;
+      }
+      h2, h3 {
+        font-family: var(--font-sans) !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.03em !important;
+        color: var(--text) !important;
+      }
+      p { color: var(--text-secondary) !important; font-family: var(--font-sans) !important; }
 
-    main {
+      /* ── All systems operational banner ── */
+      [class*="all-good"],
+      [class*="all-systems"],
+      [class*="status-ok"],
+      [class*="operational"] {
+        background: rgba(34,211,160,.05) !important;
+        border: 1px solid rgba(34,211,160,.18) !important;
+        border-radius: var(--radius) !important;
+        color: var(--success) !important;
+        font-family: var(--font-mono) !important;
+        font-size: 13px !important;
+        padding: 12px 16px !important;
+        letter-spacing: 0.01em !important;
+        margin-bottom: 24px !important;
+      }
 
-      max-width: 860px !important;
-      margin: 0 auto !important;
-      padding: 40px 24px !important;
+      /* ── Service cards ── */
+      [class*="status-"],
+      [class*="monitor"],
+      [class*="service"],
+      .status-item,
+      article {
+        background: var(--bg-surface) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius) !important;
+        padding: 16px !important;
+        margin-bottom: 8px !important;
+        transition: border-color 0.12s ease !important;
+      }
+      [class*="status-"]:hover,
+      [class*="monitor"]:hover,
+      article:hover {
+        border-color: var(--border-hover) !important;
+      }
 
-    }
+      /* Service name */
+      [class*="service-name"],
+      [class*="monitor-name"],
+      [class*="status-name"] {
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: var(--text) !important;
+        font-family: var(--font-sans) !important;
+        margin-bottom: 4px !important;
+      }
 
-    /* ───────────────────────────── */
-    /* Service Cards */
-    /* ───────────────────────────── */
+      /* ── Status labels ── */
+      [class*="up"],
+      [class*="operational"] { color: var(--success) !important; }
+      [class*="down"],
+      [class*="outage"]      { color: var(--danger)  !important; }
+      [class*="degraded"]    { color: var(--warning) !important; }
 
-    article {
+      /* ── Badges ── */
+      [class*="badge"],
+      [class*="tag"],
+      [class*="pill"] {
+        font-family: var(--font-mono) !important;
+        font-size: 10px !important;
+        font-weight: 600 !important;
+        letter-spacing: .05em !important;
+        text-transform: uppercase !important;
+        border-radius: var(--radius-xs) !important;
+        padding: 2px 7px !important;
+        border-width: 1px !important;
+        border-style: solid !important;
+      }
+      [class*="badge"][class*="up"],
+      [class*="badge"][class*="success"],
+      [class*="badge"][class*="operational"] {
+        background: rgba(34,211,160,.08) !important;
+        color: var(--success) !important;
+        border-color: rgba(34,211,160,.2) !important;
+      }
+      [class*="badge"][class*="down"],
+      [class*="badge"][class*="danger"] {
+        background: rgba(240,64,64,.08) !important;
+        color: var(--danger) !important;
+        border-color: rgba(240,64,64,.2) !important;
+      }
 
-      background: var(--bg-surface) !important;
+      /* ── Native Upptime uptime bars ── */
+      [class*="uptime-bar"] > [class*="up"],
+      [class*="uptime-bar"] > [class*="success"],
+      [class*="bars"] > [class*="up"],
+      [class*="days"] > [class*="up"] {
+        background: var(--success) !important;
+        opacity: 0.8 !important;
+      }
+      [class*="uptime-bar"] > [class*="down"],
+      [class*="uptime-bar"] > [class*="danger"],
+      [class*="bars"] > [class*="down"],
+      [class*="days"] > [class*="down"] {
+        background: var(--danger) !important;
+        opacity: 0.9 !important;
+      }
+      [class*="uptime-bar"] > [class*="degraded"],
+      [class*="uptime-bar"] > [class*="warning"],
+      [class*="bars"] > [class*="degraded"] {
+        background: var(--warning) !important;
+        opacity: 0.9 !important;
+      }
+      [class*="uptime-bar"] > [class*="empty"],
+      [class*="uptime-bar"] > [class*="none"],
+      [class*="uptime-bar"] > [class*="unknown"],
+      [class*="bars"] > [class*="empty"],
+      [class*="days"] > [class*="empty"] {
+        background: #2a2a30 !important;
+        opacity: 1 !important;
+      }
 
-      border: 1px solid var(--border) !important;
+      /* Bar labels: "90 days ago" / "Today" */
+      [class*="uptime-bar"] + *,
+      [class*="bar-labels"],
+      [class*="bar-dates"] {
+        display: flex !important;
+        justify-content: space-between !important;
+        font-family: var(--font-mono) !important;
+        font-size: 10px !important;
+        color: var(--text-muted) !important;
+        margin-top: 4px !important;
+      }
 
-      border-radius: 6px !important;
+      /* Uptime % */
+      [class*="uptime-percent"],
+      [class*="percentage"],
+      [class*="uptime-num"] {
+        font-family: var(--font-mono) !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: var(--text-secondary) !important;
+      }
 
-      padding: 16px !important;
+      /* ── Response-time graph ── */
+      [class*="graph"],
+      [class*="chart"] {
+        background: var(--bg-elevated) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius-sm) !important;
+      }
+      [class*="graph"] path,
+      [class*="graph"] polyline {
+        stroke: var(--accent) !important;
+        stroke-width: 1.5px !important;
+        fill: none !important;
+      }
+      [class*="graph"] .area,
+      [class*="graph"] [class*="fill"] {
+        fill: var(--accent-glow) !important;
+      }
 
-      margin-bottom: 8px !important;
+      /* ── Time period tabs (24h / 7d / 30d …) ── */
+      [class*="time-period"],
+      [class*="tab"],
+      [class*="period"] {
+        font-family: var(--font-mono) !important;
+        font-size: 11px !important;
+        color: var(--text-muted) !important;
+        background: transparent !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius-xs) !important;
+        padding: 3px 8px !important;
+        cursor: pointer !important;
+        transition: all 0.12s !important;
+      }
+      [class*="time-period"]:hover,
+      [class*="tab"]:hover {
+        border-color: var(--border-hover) !important;
+        color: var(--text-secondary) !important;
+      }
+      [class*="time-period"][class*="active"],
+      [class*="tab"][class*="active"],
+      [class*="time-period"][class*="selected"] {
+        border-color: var(--accent) !important;
+        color: var(--accent) !important;
+        background: var(--accent-glow) !important;
+      }
 
-    }
+      /* ── Section headings ── */
+      [class*="section-title"],
+      [class*="section"] > h2 {
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.06em !important;
+        text-transform: uppercase !important;
+        color: var(--text-muted) !important;
+        font-family: var(--font-mono) !important;
+        margin-bottom: 12px !important;
+      }
 
-    /* ───────────────────────────── */
-    /* Claude-style rectangle bars */
-    /* ───────────────────────────── */
+      /* ── Footer ── */
+      footer, [class*="footer"] {
+        background: transparent !important;
+        border-top: 1px solid var(--border-subtle) !important;
+        color: var(--text-muted) !important;
+        font-size: 11px !important;
+        font-family: var(--font-mono) !important;
+        padding: 20px 24px !important;
+        text-align: center !important;
+        margin-top: 48px !important;
+      }
+      footer a, [class*="footer"] a { color: var(--text-muted) !important; }
+      footer a:hover { color: var(--accent) !important; }
 
-    section.live-status article > div:nth-child(2),
-    section.live-status article > div:last-child {
-
-      display: flex !important;
-
-      height: 36px !important;
-
-      gap: 2px !important;
-
-      align-items: stretch !important;
-
-      overflow: hidden !important;
-
-      margin: 10px 0 6px !important;
-
-    }
-
-    section.live-status article a[style] {
-
-      flex: 1 1 0 !important;
-
-      min-width: 5px !important;
-
-      height: 100% !important;
-
-      border-radius: 2px !important;
-
-      display: block !important;
-
-      opacity: 0.9 !important;
-
-      transition: filter 0.1s ease !important;
-
-    }
-
-    section.live-status article a[style]:hover {
-
-      filter: brightness(1.3);
-
-    }
-
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: var(--bg); }
+      ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
     </style>
 
   i18n:
-
     activeIncidents: "Active incidents"
-
+    incidentReport: "Incident report"
+    incidentReportDescription: "Resolved in {{ duration }}"
+    uptimeRatio: "Uptime ratio"
+    responseTime: "Response time"
+    responseTimeDescription: "Average response time over the last 24 hours"
+    noIncidents: "No incidents"
+    systemsOperational: "All systems operational"
+    degradedPerformance: "Degraded performance"
+    partialOutage: "Partial outage"
+    majorOutage: "Major outage"
     footer: "AZRU Platform — Powered by Upptime"
+    overallUptime: "Overall uptime"
+    liveStatus: "Live status"
+    pastIncidents: "Past incidents"
