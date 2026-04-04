@@ -10,11 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 160,
-    "timeDay": 160,
-    "timeWeek": 160,
-    "timeMonth": 160,
-    "timeYear": 160,
+    "time": 156,
+    "timeDay": 156,
+    "timeWeek": 156,
+    "timeMonth": 156,
+    "timeYear": 156,
     "dailyMinutesDown": {}
   },
   {
@@ -23,18 +23,18 @@
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "pebble-azru-cloud",
     "status": "down",
-    "uptime": "52.60%",
-    "uptimeDay": "52.60%",
-    "uptimeWeek": "52.60%",
-    "uptimeMonth": "52.60%",
-    "uptimeYear": "52.60%",
-    "time": 124,
-    "timeDay": 124,
-    "timeWeek": 124,
-    "timeMonth": 124,
-    "timeYear": 124,
+    "uptime": "49.13%",
+    "uptimeDay": "49.13%",
+    "uptimeWeek": "49.13%",
+    "uptimeMonth": "49.13%",
+    "uptimeYear": "49.13%",
+    "time": 117,
+    "timeDay": 117,
+    "timeWeek": 117,
+    "timeMonth": 117,
+    "timeYear": 117,
     "dailyMinutesDown": {
-      "2026-04-04": 233
+      "2026-04-04": 268
     }
   },
   {
@@ -43,18 +43,18 @@
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "api",
     "status": "down",
-    "uptime": "52.60%",
-    "uptimeDay": "52.60%",
-    "uptimeWeek": "52.60%",
-    "uptimeMonth": "52.60%",
-    "uptimeYear": "52.60%",
-    "time": 15,
-    "timeDay": 15,
-    "timeWeek": 15,
-    "timeMonth": 15,
-    "timeYear": 15,
+    "uptime": "49.13%",
+    "uptimeDay": "49.13%",
+    "uptimeWeek": "49.13%",
+    "uptimeMonth": "49.13%",
+    "uptimeYear": "49.13%",
+    "time": 13,
+    "timeDay": 13,
+    "timeWeek": 13,
+    "timeMonth": 13,
+    "timeYear": 13,
     "dailyMinutesDown": {
-      "2026-04-04": 233
+      "2026-04-04": 268
     }
   },
   {
@@ -63,18 +63,18 @@
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "keystone-identity",
     "status": "down",
-    "uptime": "52.61%",
-    "uptimeDay": "52.61%",
-    "uptimeWeek": "52.61%",
-    "uptimeMonth": "52.61%",
-    "uptimeYear": "52.61%",
-    "time": 13,
-    "timeDay": 13,
-    "timeWeek": 13,
-    "timeMonth": 13,
-    "timeYear": 13,
+    "uptime": "49.14%",
+    "uptimeDay": "49.14%",
+    "uptimeWeek": "49.14%",
+    "uptimeMonth": "49.14%",
+    "uptimeYear": "49.14%",
+    "time": 12,
+    "timeDay": 12,
+    "timeWeek": 12,
+    "timeMonth": 12,
+    "timeYear": 12,
     "dailyMinutesDown": {
-      "2026-04-04": 233
+      "2026-04-04": 268
     }
   },
   {
@@ -83,18 +83,18 @@
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "nova-compute",
     "status": "down",
-    "uptime": "52.61%",
-    "uptimeDay": "52.61%",
-    "uptimeWeek": "52.61%",
-    "uptimeMonth": "52.61%",
-    "uptimeYear": "52.61%",
-    "time": 13,
-    "timeDay": 13,
-    "timeWeek": 13,
-    "timeMonth": 13,
-    "timeYear": 13,
+    "uptime": "49.14%",
+    "uptimeDay": "49.14%",
+    "uptimeWeek": "49.14%",
+    "uptimeMonth": "49.14%",
+    "uptimeYear": "49.14%",
+    "time": 12,
+    "timeDay": 12,
+    "timeWeek": 12,
+    "timeMonth": 12,
+    "timeYear": 12,
     "dailyMinutesDown": {
-      "2026-04-04": 233
+      "2026-04-04": 268
     }
   },
   {
@@ -103,18 +103,18 @@
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "neutron-network",
     "status": "down",
-    "uptime": "52.61%",
-    "uptimeDay": "52.61%",
-    "uptimeWeek": "52.61%",
-    "uptimeMonth": "52.61%",
-    "uptimeYear": "52.61%",
-    "time": 14,
-    "timeDay": 14,
-    "timeWeek": 14,
-    "timeMonth": 14,
-    "timeYear": 14,
+    "uptime": "49.14%",
+    "uptimeDay": "49.14%",
+    "uptimeWeek": "49.14%",
+    "uptimeMonth": "49.14%",
+    "uptimeYear": "49.14%",
+    "time": 13,
+    "timeDay": 13,
+    "timeWeek": 13,
+    "timeMonth": 13,
+    "timeYear": 13,
     "dailyMinutesDown": {
-      "2026-04-04": 233
+      "2026-04-04": 268
     }
   },
   {
@@ -123,18 +123,18 @@
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "glance-images",
     "status": "down",
-    "uptime": "52.62%",
-    "uptimeDay": "52.62%",
-    "uptimeWeek": "52.62%",
-    "uptimeMonth": "52.62%",
-    "uptimeYear": "52.62%",
-    "time": 16,
-    "timeDay": 16,
-    "timeWeek": 16,
-    "timeMonth": 16,
-    "timeYear": 16,
+    "uptime": "49.14%",
+    "uptimeDay": "49.14%",
+    "uptimeWeek": "49.14%",
+    "uptimeMonth": "49.14%",
+    "uptimeYear": "49.14%",
+    "time": 14,
+    "timeDay": 14,
+    "timeWeek": 14,
+    "timeMonth": 14,
+    "timeYear": 14,
     "dailyMinutesDown": {
-      "2026-04-04": 233
+      "2026-04-04": 268
     }
   },
   {
@@ -143,18 +143,18 @@
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "cinder-volumes",
     "status": "down",
-    "uptime": "52.62%",
-    "uptimeDay": "52.62%",
-    "uptimeWeek": "52.62%",
-    "uptimeMonth": "52.62%",
-    "uptimeYear": "52.62%",
-    "time": 14,
-    "timeDay": 14,
-    "timeWeek": 14,
-    "timeMonth": 14,
-    "timeYear": 14,
+    "uptime": "49.15%",
+    "uptimeDay": "49.15%",
+    "uptimeWeek": "49.15%",
+    "uptimeMonth": "49.15%",
+    "uptimeYear": "49.15%",
+    "time": 13,
+    "timeDay": 13,
+    "timeWeek": 13,
+    "timeMonth": 13,
+    "timeYear": 13,
     "dailyMinutesDown": {
-      "2026-04-04": 233
+      "2026-04-04": 268
     }
   }
 ]
