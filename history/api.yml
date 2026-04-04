@@ -1,7 +1,7 @@
 url: https://pebble.azru.cloud/api/v1/health/ping
 status: down
 code: 530
-responseTime: 6
-lastUpdated: 2026-04-04T23:33:05.563Z
+responseTime: 15
+lastUpdated: 2026-04-04T23:37:01.360Z
 startTime: 2026-04-04T14:46:02.458Z
 generator: Upptime <https://github.com/upptime/upptime>
