@@ -31,23 +31,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_PAT || github.token }}
-
-      - name: Check time window (10:00–21:00 Europe/Paris)
-        id: timecheck
-        run: |
-          HOUR=$(TZ="Europe/Paris" date +%H)
-          HOUR=$((10#$HOUR))
-          echo "Current hour in Paris: $HOUR"
-          if [ "$HOUR" -lt 10 ] || [ "$HOUR" -ge 21 ]; then
-            echo "Outside monitoring window (10:00–21:00). Skipping."
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "Inside monitoring window. Proceeding."
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Check endpoint status
-        if: steps.timecheck.outputs.skip == 'false'
         uses: upptime/uptime-monitor@v1.41.0
         with:
           command: "update"
