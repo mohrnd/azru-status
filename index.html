@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AZRU Status</title>
+<link rel="icon" type="image/svg+xml" href="https://azru.cloud/static/img/azru-favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:          #0a0a0b;
+  --surface:     #111113;
+  --border:      #222226;
+  --border-h:    #333338;
+  --text:        #ffffff;
+  --text-2:      #a0a0a8;
+  --text-m:      #505058;
+  --accent:      #6c63ff;
+  --success:     #22d3a0;
+  --warning:     #f5a623;
+  --danger:      #f04040;
+  --mono:        'IBM Plex Mono', monospace;
+  --sans:        'Geist', system-ui, sans-serif;
+  --r:           6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* grid + glow */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px; left: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(108,99,255,.15) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+body > * { position: relative; z-index: 1; }
+
+/* nav */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  height: 52px;
+  background: rgba(10,10,11,.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  display: flex; align-items: center;
+  padding: 0 24px;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo img { height: 22px; width: auto; }
+.logo span { font-size: 14px; font-weight: 600; letter-spacing: -.03em; color: var(--text); }
+
+/* main */
+main { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+h1 {
+  font-size: 1.75rem; font-weight: 600;
+  letter-spacing: -.04em; margin-bottom: 6px;
+}
+.lead { color: var(--text-2); margin-bottom: 32px; }
+
+/* all-good banner */
+.banner {
+  background: rgba(34,211,160,.05);
+  border: 1px solid rgba(34,211,160,.18);
+  border-radius: var(--r);
+  color: var(--success);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 12px 16px;
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 8px;
+}
+.banner-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 6px var(--success);
+  flex-shrink: 0;
+}
+
+/* section label */
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text-m);
+  margin-bottom: 12px; margin-top: 32px;
+}
+
+/* service card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  margin-bottom: 8px;
+  transition: border-color .12s;
+}
+.card:hover { border-color: var(--border-h); }
+
+.card-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.card-name { font-size: 13px; font-weight: 500; }
+.badge {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase;
+  border-radius: 3px; padding: 2px 7px;
+  border: 1px solid rgba(34,211,160,.2);
+  background: rgba(34,211,160,.08);
+  color: var(--success);
+}
+
+/* uptime bars */
+.bars {
+  display: flex; gap: 2px;
+  height: 36px; align-items: stretch;
+}
+.bar {
+  flex: 1 1 0; border-radius: 2px;
+  transition: filter .1s, transform .1s;
+  position: relative;
+}
+.bar:hover { filter: brightness(1.4); transform: scaleY(1.1); z-index: 1; }
+.bar.up    { background: var(--success); opacity: .75; }
+.bar.empty { background: #1e1e24; opacity: 1; }
+
+/* tooltip */
+.bar::after {
+  content: attr(data-d);
+  position: absolute;
+  bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%);
+  background: #19191c;
+  border: 1px solid #333338;
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px; border-radius: 3px;
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity .12s; z-index: 99;
+}
+.bar:hover::after { opacity: 1; }
+
+/* bar labels */
+.bar-meta {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px;
+  color: var(--text-m); margin-top: 5px;
+}
+.uptime-pct { color: var(--success); font-weight: 600; font-size: 11px; }
+
+/* monitoring note */
+.note {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text-m);
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  margin-top: 32px;
+}
+
+/* footer */
+footer {
+  border-top: 1px solid #16161a;
+  color: var(--text-m);
+  font-family: var(--mono); font-size: 11px;
+  padding: 20px 24px; text-align: center;
+  margin-top: 48px;
+}
+footer a { color: var(--text-m); text-decoration: none; }
+footer a:hover { color: var(--accent); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="https://status.azru.cloud">
+    <img src="https://raw.githubusercontent.com/mohrnd/azru-status/master/assets/azru-logo.svg" alt="AZRU">
+    <span>AZRU Status</span>
+  </a>
+</nav>
+
+<main>
+  <h1>AZRU Platform Status</h1>
+  <p class="lead">Real-time status for the AZRU cloud platform. The platform is available from 10:00 to 21:00 UTC+2.</p>
+
+  <div class="banner">
+    <div class="banner-dot"></div>
+    All systems operational
+  </div>
+
+  <div class="section-label">Web</div>
+
+  <!-- azru.cloud -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">azru.cloud</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-azru-cloud"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <!-- pebble.azru.cloud -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">pebble.azru.cloud</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-pebble-azru-cloud"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <!-- API -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">API</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-api"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <div class="section-label">OpenStack</div>
+
+  <!-- Keystone -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">Keystone (Identity)</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-keystone-identity"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <!-- Nova -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">Nova (Compute)</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-nova-compute"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <!-- Neutron -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">Neutron (Network)</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-neutron-network"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <!-- Glance -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">Glance (Images)</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-glance-images"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <!-- Cinder -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-name">Cinder (Volumes)</span>
+      <span class="badge">Operational</span>
+    </div>
+    <div class="bars" id="bars-cinder-volumes"></div>
+    <div class="bar-meta">
+      <span>90 days ago</span>
+      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+    </div>
+  </div>
+
+  <div class="note">
+    ⚠ Monitoring runs 10:00–21:00 France time (CET/CEST). Gray bars = outside monitoring window.
+  </div>
+</main>
+
+<footer>
+  <p>This page is <a href="https://github.com/mohrnd/azru-status">open source</a>, powered by <a href="https://upptime.js.org">Upptime</a></p>
+</footer>
+
+<script>
+// No fetching. Bars are rendered purely from hardcoded dates.
+// Monitoring started 2026-04-04. Gray = no data, green = up.
+(function() {
+  var START = new Date('2026-04-04');
+  var TODAY = new Date('2026-04-05');
+  var DAYS  = 90;
+
+  var ids = [
+    'bars-azru-cloud',
+    'bars-pebble-azru-cloud',
+    'bars-api',
+    'bars-keystone-identity',
+    'bars-nova-compute',
+    'bars-neutron-network',
+    'bars-glance-images',
+    'bars-cinder-volumes'
+  ];
+
+  ids.forEach(function(id) {
+    var container = document.getElementById(id);
+    if (!container) return;
+
+    for (var i = DAYS - 1; i >= 0; i--) {
+      var d = new Date(TODAY);
+      d.setDate(d.getDate() - i);
+      d.setHours(0,0,0,0);
+
+      var bar = document.createElement('div');
+      var isMonitored = d >= START;
+
+      bar.className = 'bar ' + (isMonitored ? 'up' : 'empty');
+
+      var mm = String(d.getMonth()+1).padStart(2,'0');
+      var dd = String(d.getDate()).padStart(2,'0');
+      bar.setAttribute('data-d', d.getFullYear() + '-' + mm + '-' + dd + (isMonitored ? ' · operational' : ' · no data'));
+
+      container.appendChild(bar);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
