@@ -103,7 +103,7 @@ status-website:
   name: AZRU Status
   logoUrl: https://raw.githubusercontent.com/mohrnd/azru-status/master/assets/azru-logo.svg
   introTitle: "AZRU Platform Status"
-  introMessage: "Real-time status for the AZRU cloud platform. Monitored automatically via GitHub Actions."
+  introMessage: "Real-time status for the AZRU cloud platform. Open from 10am to 9pm."
   navbar:
     - title: AZRU Cloud
       href: https://azru.cloud
