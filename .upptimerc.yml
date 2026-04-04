@@ -198,18 +198,12 @@ status-website:
         vertical-align: middle !important;
       }
 
-      /* ── Service icons ── */
+      /* ── Service icons — hidden ── */
       [class*="monitor"] img,
       [class*="service"] img,
       [class*="status-item"] img,
       article img {
-        width: 16px !important;
-        height: 16px !important;
-        border-radius: var(--radius-xs) !important;
-        flex-shrink: 0 !important;
-        display: inline-block !important;
-        vertical-align: middle !important;
-        margin-right: 8px !important;
+        display: none !important;
       }
 
       /* ── Page wrapper ── */
@@ -318,41 +312,46 @@ status-website:
         border-color: rgba(240,64,64,.2) !important;
       }
 
-      /* ── Uptime bars — chunky rectangles (like Anthropic status page) ── */
+      /* ── Uptime bars — chunky rectangles (like Claude status page) ── */
+      /* Upptime wraps bars in a <div class="uptime-bar"> with <a> children */
+      .uptime-bar,
       [class*="uptime-bar"],
       [class*="uptime"] > div,
-      .uptime-bar,
       [class*="bars"],
       [class*="days"] {
         display: flex !important;
-        gap: 3px !important;
-        height: 36px !important;
+        gap: 2px !important;
+        height: 40px !important;
         align-items: stretch !important;
         background: transparent !important;
         border: none !important;
         border-radius: 0 !important;
-        overflow: visible !important;
+        overflow: hidden !important;
         margin: 12px 0 8px !important;
+        width: 100% !important;
       }
 
-      /* Each day = a chunky filled rectangle */
-      [class*="uptime-bar"] > *,
-      [class*="uptime"] > div > *,
+      /* Each bar child = chunky filled rectangle, NO max-width */
       .uptime-bar > *,
+      .uptime-bar a,
+      [class*="uptime-bar"] > *,
+      [class*="uptime-bar"] a,
+      [class*="uptime"] > div > *,
       [class*="bars"] > *,
       [class*="days"] > * {
-        flex: 1 !important;
+        flex: 1 1 0 !important;
         min-width: 0 !important;
-        border-radius: 3px !important;
+        max-width: none !important;
+        border-radius: 2px !important;
         border: none !important;
-        transition: opacity 0.1s, filter 0.1s !important;
+        display: block !important;
+        transition: filter 0.1s !important;
         cursor: default !important;
       }
-      [class*="uptime-bar"] > *:hover,
-      [class*="bars"] > *:hover,
-      [class*="days"] > *:hover {
-        opacity: 1 !important;
-        filter: brightness(1.2) !important;
+      .uptime-bar > *:hover,
+      .uptime-bar a:hover,
+      [class*="uptime-bar"] > *:hover {
+        filter: brightness(1.25) !important;
       }
 
       /* Up — teal */
@@ -426,20 +425,6 @@ status-website:
       [class*="graph"] .area,
       [class*="graph"] [class*="fill"] {
         fill: var(--accent-glow) !important;
-      }
-
-      /* ── Incidents ── */
-      [class*="incident"],
-      [class*="issue"],
-      [class*="outage-detail"] {
-        background: rgba(240,64,64,.06) !important;
-        border: 1px solid rgba(240,64,64,.18) !important;
-        border-radius: var(--radius-sm) !important;
-        color: #f88 !important;
-        font-size: 12px !important;
-        padding: 10px 14px !important;
-        font-family: var(--font-sans) !important;
-        margin-top: 8px !important;
       }
 
       /* ── Time period tabs (24h / 7d / 30d …) ── */
