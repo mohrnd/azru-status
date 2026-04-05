@@ -178,8 +178,8 @@ status-website:
       }
       body > * { position: relative; z-index: 1; }
 
-      a { color: var(--accent); text-decoration: none; }
-      a:hover { color: var(--accent-hover); }
+      a { color: var(--accent) !important; text-decoration: none; }
+      a:hover { color: var(--accent-hover) !important; }
 
       /* ── Nav / Header ── */
       header, nav,
@@ -303,11 +303,26 @@ status-website:
       }
 
       /* ── Status labels ── */
-      [class*="up"],
-      [class*="operational"] { color: var(--success) !important; }
-      [class*="down"],
-      [class*="outage"]      { color: var(--danger)  !important; }
-      [class*="degraded"]    { color: var(--warning) !important; }
+      /* Scoped to badge/pill/tag/status compound selectors ONLY.
+         Broad [class*="down"] on a card cascades via CSS inheritance
+         and turns the service name, uptime %, and response time all red. */
+      [class*="badge"][class*="up"],
+      [class*="pill"][class*="up"],
+      [class*="tag"][class*="up"],
+      [class*="status"][class*="up"],
+      [class*="badge"][class*="operational"],
+      [class*="status"][class*="operational"] { color: var(--success) !important; }
+
+      [class*="badge"][class*="down"],
+      [class*="pill"][class*="down"],
+      [class*="tag"][class*="down"],
+      [class*="status"][class*="down"],
+      [class*="badge"][class*="outage"],
+      [class*="status"][class*="outage"]      { color: var(--danger)  !important; }
+
+      [class*="badge"][class*="degraded"],
+      [class*="pill"][class*="degraded"],
+      [class*="status"][class*="degraded"]    { color: var(--warning) !important; }
 
       /* ── Badges ── */
       [class*="badge"],
