@@ -217,7 +217,9 @@ footer a:hover { color: var(--accent); }
   <h1>AZRU Platform Status</h1>
   <p class="lead">Real-time status for the AZRU cloud platform. The platform is available from 10:00 to 21:00 UTC+2.</p>
 
-  <div class="banner">
+  <div id="sleep-banner" style="display:none;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.25);border-radius:6px;color:#6c63ff;font-family:var(--mono);font-size:13px;padding:14px 18px;margin-bottom:24px;align-items:center;gap:10px;"><div style="width:7px;height:7px;border-radius:50%;background:#6c63ff;box-shadow:0 0 8px #6c63ff;flex-shrink:0;animation:sleeppulse 2.5s infinite"></div><span>Platform is sleeping — available 10:00–21:00 UTC+2. Monitoring paused.</span></div>
+
+  <div class="banner" id="ops-banner">
     <div class="banner-dot"></div>
     All systems operational
   </div>
@@ -233,7 +235,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-azru-cloud"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -246,7 +248,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-pebble-azru-cloud"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -259,7 +261,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-api"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -274,7 +276,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-keystone-identity"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -287,7 +289,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-nova-compute"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -300,7 +302,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-neutron-network"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -313,7 +315,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-glance-images"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -326,7 +328,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-cinder-volumes"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">100.00% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -343,8 +345,8 @@ footer a:hover { color: var(--accent); }
 // No fetching. Bars are rendered purely from hardcoded dates.
 // Monitoring started 2026-04-04. Gray = no data, green = up.
 (function() {
-  var START = new Date('2026-04-04');
-  var TODAY = new Date('2026-04-05');
+  var START = new Date('2026-03-01');
+  var TODAY = new Date('2026-04-08');
   var DAYS  = 90;
 
   var ids = [
@@ -379,6 +381,30 @@ footer a:hover { color: var(--accent); }
       container.appendChild(bar);
     }
   });
+})();
+
+// ── Sleeping hours banner ──────────────────────────────────────────────────
+(function() {
+  var style = document.createElement('style');
+  style.textContent = '@keyframes sleeppulse{0%,100%{opacity:1}50%{opacity:.3}}';
+  document.head.appendChild(style);
+
+  function checkSleep() {
+    var now = new Date();
+    var dayMin = ((now.getUTCHours() * 60 + now.getUTCMinutes()) + 120) % 1440;
+    var sleeping = dayMin < 600 || dayMin >= 1260; // before 10:00 or after 21:00 UTC+2
+    var sb = document.getElementById('sleep-banner');
+    var ob = document.getElementById('ops-banner');
+    if (sleeping) {
+      sb.style.display = 'flex';
+      if (ob) ob.style.display = 'none';
+    } else {
+      sb.style.display = 'none';
+      if (ob) ob.style.display = 'flex';
+    }
+  }
+  checkSleep();
+  setInterval(checkSleep, 60000);
 })();
 </script>
 

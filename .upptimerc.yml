@@ -89,11 +89,15 @@ sites:
 #   (hour 19 would run up to 19:57 UTC = 21:57 UTC+2, past the 9 PM cutoff)
 #   So we cap at hour 18: last check at 18:57 UTC = 20:57 UTC+2 ✓
 workflowSchedule:
-  uptime: "*/3 8-18 * * *"
+
+  uptime: "*/5 8-18 * * *"
+
+  staticSite: "*/5 8-18 * * *"
+  summary: "*/5 8-18 * * *"
+
   graphs: "0 18 * * *"
   responseTime: "0 18 * * *"
-  staticSite: "5 18 * * *"
-  summary: "10 18 * * *"
+
   updateTemplate: "0 4 * * 0"
   updates: "0 3 * * *"
 
@@ -303,26 +307,62 @@ status-website:
       }
 
       /* ── Status labels ── */
-      /* Scoped to badge/pill/tag/status compound selectors ONLY.
-         Broad [class*="down"] on a card cascades via CSS inheritance
-         and turns the service name, uptime %, and response time all red. */
+      /* Only target badge/pill/tag elements — NEVER bare [class*="down"] on
+         a card, which cascades and turns service names + uptime % red.      */
       [class*="badge"][class*="up"],
       [class*="pill"][class*="up"],
       [class*="tag"][class*="up"],
-      [class*="status"][class*="up"],
       [class*="badge"][class*="operational"],
-      [class*="status"][class*="operational"] { color: var(--success) !important; }
+      [class*="label"][class*="up"]           { color: var(--success) !important; }
 
       [class*="badge"][class*="down"],
       [class*="pill"][class*="down"],
       [class*="tag"][class*="down"],
-      [class*="status"][class*="down"],
       [class*="badge"][class*="outage"],
-      [class*="status"][class*="outage"]      { color: var(--danger)  !important; }
+      [class*="label"][class*="down"]         { color: var(--danger)  !important; }
 
       [class*="badge"][class*="degraded"],
       [class*="pill"][class*="degraded"],
-      [class*="status"][class*="degraded"]    { color: var(--warning) !important; }
+      [class*="tag"][class*="degraded"]       { color: var(--warning) !important; }
+
+      /* Ensure service name, uptime %, response time are NEVER colored by
+         the card's status — always neutral text.                             */
+      [class*="monitor"] h2,
+      [class*="monitor"] h3,
+      [class*="monitor"] p,
+      [class*="monitor"] span:not([class*="badge"]):not([class*="pill"]):not([class*="tag"]):not([class*="label"]),
+      [class*="service"] h2,
+      [class*="service"] h3,
+      article h2,
+      article h3,
+      article p,
+      article > span { color: inherit !important; }
+
+      /* ── Sleeping hours banner ── */
+      #azru-sleep-banner {
+        display: none;
+        background: rgba(108,99,255,.08);
+        border: 1px solid rgba(108,99,255,.25);
+        border-radius: 6px;
+        color: var(--accent);
+        font-family: var(--font-mono, monospace);
+        font-size: 13px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        align-items: center;
+        gap: 10px;
+      }
+      #azru-sleep-banner.visible { display: flex; }
+      #azru-sleep-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent);
+        flex-shrink: 0;
+        animation: sleeppulse 2.5s ease-in-out infinite;
+      }
+      @keyframes sleeppulse {
+        0%,100% { opacity: 1; } 50% { opacity: .35; }
+      }
 
       /* ── Badges ── */
       [class*="badge"],
@@ -481,6 +521,43 @@ status-website:
       ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
       ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
     </style>
+    <script>
+    (function() {
+      // Show "platform is sleeping" banner outside 10:00-21:00 UTC+2
+      function injectSleepBanner() {
+        var now = new Date();
+        // UTC+2 offset in minutes
+        var utc2Minutes = now.getUTCHours() * 60 + now.getUTCMinutes() + 120;
+        var dayMinutes  = utc2Minutes % (24 * 60);
+        var open  = 10 * 60;  // 10:00
+        var close = 21 * 60;  // 21:00
+        var isSleeping = dayMinutes < open || dayMinutes >= close;
+
+        var banner = document.getElementById('azru-sleep-banner');
+        if (!banner) {
+          banner = document.createElement('div');
+          banner.id = 'azru-sleep-banner';
+          banner.innerHTML =
+            '<div id="azru-sleep-dot"></div>' +
+            '<span>Platform is sleeping — available 10:00–21:00 UTC+2. ' +
+            'Monitoring paused outside these hours.</span>';
+          // Insert as first child of main, or body if main not found yet
+          var main = document.querySelector('main') || document.body;
+          main.insertBefore(banner, main.firstChild);
+        }
+        if (isSleeping) { banner.classList.add('visible'); }
+        else            { banner.classList.remove('visible'); }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectSleepBanner);
+      } else {
+        injectSleepBanner();
+      }
+      // Re-check every minute in case page stays open across boundary
+      setInterval(injectSleepBanner, 60000);
+    })();
+    </script>
 
   i18n:
     activeIncidents: "Active incidents"
