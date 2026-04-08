@@ -24,7 +24,7 @@
     "slug": "pebble-azru-cloud",
     "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -33,7 +33,9 @@
     "timeWeek": 110,
     "timeMonth": 110,
     "timeYear": 110,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-04-08": 0
+    }
   },
   {
     "name": "API",
@@ -42,7 +44,7 @@
     "slug": "api",
     "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -51,7 +53,9 @@
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-04-08": 0
+    }
   },
   {
     "name": "Keystone (Identity)",
@@ -60,7 +64,7 @@
     "slug": "keystone-identity",
     "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -69,7 +73,9 @@
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-04-08": 0
+    }
   },
   {
     "name": "Nova (Compute)",
@@ -78,7 +84,7 @@
     "slug": "nova-compute",
     "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -87,7 +93,9 @@
     "timeWeek": 11,
     "timeMonth": 11,
     "timeYear": 11,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-04-08": 0
+    }
   },
   {
     "name": "Neutron (Network)",
@@ -96,7 +104,7 @@
     "slug": "neutron-network",
     "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -105,7 +113,9 @@
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-04-08": 0
+    }
   },
   {
     "name": "Glance (Images)",
@@ -114,7 +124,7 @@
     "slug": "glance-images",
     "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -123,7 +133,9 @@
     "timeWeek": 13,
     "timeMonth": 13,
     "timeYear": 13,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-04-08": 0
+    }
   },
   {
     "name": "Cinder (Volumes)",
@@ -132,7 +144,7 @@
     "slug": "cinder-volumes",
     "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -141,6 +153,8 @@
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-04-08": 0
+    }
   }
 ]
