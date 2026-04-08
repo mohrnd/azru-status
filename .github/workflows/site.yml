@@ -27,6 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
+      - name: Check monitoring window (10:00–21:00 UTC+2)
+        run: |
+          HOUR=$(TZ=Europe/Paris date +%H)
+          if [ "$HOUR" -lt 10 ] || [ "$HOUR" -ge 21 ]; then
+            echo "Outside monitoring window ($HOUR:xx Paris time). Skipping."
+            exit 0
+          fi
+
       - name: Checkout
         uses: actions/checkout@v4
         with:

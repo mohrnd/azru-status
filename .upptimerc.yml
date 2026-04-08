@@ -37,7 +37,7 @@ sites:
   - name: pebble.azru.cloud
     url: https://pebble.azru.cloud
     icon: https://azru.cloud/static/img/azru-favicon.svg
-    maxResponseTime: 3000
+    maxResponseTime: 30000
 
   - name: API
     url: https://pebble.azru.cloud/api/v1/health/ping
