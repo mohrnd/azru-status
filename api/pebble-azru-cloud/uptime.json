@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"schemaVersion":1,"label":"uptime","message":"93.28%","color":"green"}
+=======
+{"schemaVersion": 1, "label": "uptime", "message": "up", "color": "brightgreen"}
+>>>>>>> 98a5413 (+++)
