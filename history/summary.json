@@ -4,24 +4,15 @@
     "url": "https://azru.cloud",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "azru-cloud",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "100.00%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
-    "uptimeYear": "100.00%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 142,
-    "timeDay": 0,
-    "timeWeek": 0,
+    "timeDay": 138,
+    "timeWeek": 138,
     "timeMonth": 142,
     "timeYear": 142,
     "dailyMinutesDown": {}
@@ -31,265 +22,125 @@
     "url": "https://pebble.azru.cloud",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "pebble-azru-cloud",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "93.28%",
-    "uptimeDay": "37.97%",
-    "uptimeWeek": "58.34%",
-    "uptimeMonth": "90.41%",
-    "uptimeYear": "93.28%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 110,
     "timeDay": 110,
     "timeWeek": 110,
     "timeMonth": 110,
     "timeYear": 110,
-<<<<<<< HEAD
-    "dailyMinutesDown": {
-      "2026-04-13": 648,
-      "2026-04-12": 803,
-      "2026-04-11": 813,
-      "2026-04-10": 838,
-      "2026-04-09": 809,
-      "2026-04-08": 289
-    }
-=======
     "dailyMinutesDown": {}
->>>>>>> 98a5413 (+++)
   },
   {
     "name": "API",
     "url": "https://pebble.azru.cloud/api/v1/health/ping",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "api",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "93.28%",
-    "uptimeDay": "37.97%",
-    "uptimeWeek": "58.34%",
-    "uptimeMonth": "90.41%",
-    "uptimeYear": "93.28%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 12,
     "timeDay": 12,
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-<<<<<<< HEAD
-    "dailyMinutesDown": {
-      "2026-04-13": 648,
-      "2026-04-12": 803,
-      "2026-04-11": 813,
-      "2026-04-10": 838,
-      "2026-04-09": 809,
-      "2026-04-08": 289
-    }
-=======
     "dailyMinutesDown": {}
->>>>>>> 98a5413 (+++)
   },
   {
     "name": "Keystone (Identity)",
     "url": "https://pebble.azru.cloud/api/v1/status/keystone",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "keystone-identity",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "93.28%",
-    "uptimeDay": "37.97%",
-    "uptimeWeek": "58.34%",
-    "uptimeMonth": "90.41%",
-    "uptimeYear": "93.28%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 12,
     "timeDay": 12,
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-<<<<<<< HEAD
-    "dailyMinutesDown": {
-      "2026-04-13": 648,
-      "2026-04-12": 803,
-      "2026-04-11": 813,
-      "2026-04-10": 838,
-      "2026-04-09": 809,
-      "2026-04-08": 289
-    }
-=======
     "dailyMinutesDown": {}
->>>>>>> 98a5413 (+++)
   },
   {
     "name": "Nova (Compute)",
     "url": "https://pebble.azru.cloud/api/v1/status/nova",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "nova-compute",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "93.28%",
-    "uptimeDay": "37.96%",
-    "uptimeWeek": "58.34%",
-    "uptimeMonth": "90.41%",
-    "uptimeYear": "93.28%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 11,
     "timeDay": 11,
     "timeWeek": 11,
     "timeMonth": 11,
     "timeYear": 11,
-<<<<<<< HEAD
-    "dailyMinutesDown": {
-      "2026-04-13": 648,
-      "2026-04-12": 803,
-      "2026-04-11": 812,
-      "2026-04-10": 838,
-      "2026-04-09": 809,
-      "2026-04-08": 289
-    }
-=======
     "dailyMinutesDown": {}
->>>>>>> 98a5413 (+++)
   },
   {
     "name": "Neutron (Network)",
     "url": "https://pebble.azru.cloud/api/v1/status/neutron",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "neutron-network",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "93.28%",
-    "uptimeDay": "37.96%",
-    "uptimeWeek": "58.34%",
-    "uptimeMonth": "90.41%",
-    "uptimeYear": "93.28%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 12,
     "timeDay": 12,
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-<<<<<<< HEAD
-    "dailyMinutesDown": {
-      "2026-04-13": 648,
-      "2026-04-12": 803,
-      "2026-04-11": 812,
-      "2026-04-10": 838,
-      "2026-04-09": 809,
-      "2026-04-08": 289
-    }
-=======
     "dailyMinutesDown": {}
->>>>>>> 98a5413 (+++)
   },
   {
     "name": "Glance (Images)",
     "url": "https://pebble.azru.cloud/api/v1/status/glance",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "glance-images",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "93.28%",
-    "uptimeDay": "37.96%",
-    "uptimeWeek": "58.34%",
-    "uptimeMonth": "90.41%",
-    "uptimeYear": "93.28%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 13,
     "timeDay": 13,
     "timeWeek": 13,
     "timeMonth": 13,
     "timeYear": 13,
-<<<<<<< HEAD
-    "dailyMinutesDown": {
-      "2026-04-13": 648,
-      "2026-04-12": 803,
-      "2026-04-11": 812,
-      "2026-04-10": 838,
-      "2026-04-09": 809,
-      "2026-04-08": 289
-    }
-=======
     "dailyMinutesDown": {}
->>>>>>> 98a5413 (+++)
   },
   {
     "name": "Cinder (Volumes)",
     "url": "https://pebble.azru.cloud/api/v1/status/cinder",
     "icon": "https://azru.cloud/static/img/azru-favicon.svg",
     "slug": "cinder-volumes",
-<<<<<<< HEAD
-    "status": "down",
-    "uptime": "93.28%",
-    "uptimeDay": "37.95%",
-    "uptimeWeek": "58.33%",
-    "uptimeMonth": "90.41%",
-    "uptimeYear": "93.28%",
-=======
     "status": "up",
     "uptime": "99.99%",
     "uptimeDay": "99.99%",
     "uptimeWeek": "99.99%",
     "uptimeMonth": "99.99%",
     "uptimeYear": "99.99%",
->>>>>>> 98a5413 (+++)
     "time": 12,
     "timeDay": 12,
     "timeWeek": 12,
     "timeMonth": 12,
     "timeYear": 12,
-<<<<<<< HEAD
-    "dailyMinutesDown": {
-      "2026-04-13": 648,
-      "2026-04-12": 804,
-      "2026-04-11": 812,
-      "2026-04-10": 838,
-      "2026-04-09": 809,
-      "2026-04-08": 289
-    }
-=======
     "dailyMinutesDown": {}
->>>>>>> 98a5413 (+++)
   }
 ]
