@@ -235,7 +235,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-azru-cloud"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -248,7 +248,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-pebble-azru-cloud"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -261,7 +261,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-api"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -276,7 +276,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-keystone-identity"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -289,7 +289,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-nova-compute"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -302,7 +302,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-neutron-network"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -315,7 +315,7 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-glance-images"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -328,12 +328,12 @@ footer a:hover { color: var(--accent); }
     <div class="bars" id="bars-cinder-volumes"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.98% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
   <div class="note">
-    ⚠ Monitoring runs 10:00–21:00 France time (CET/CEST). Gray bars = outside monitoring window.
+    ⚠ Monitoring runs 10:00–20:00 France time (CEST). Gray bars = no data yet.
   </div>
 </main>
 
@@ -346,7 +346,7 @@ footer a:hover { color: var(--accent); }
 // Monitoring started 2026-04-04. Gray = no data, green = up.
 (function() {
   var START = new Date('2026-03-01');
-  var TODAY = new Date('2026-04-08');
+  var TODAY = new Date(); TODAY.setHours(0,0,0,0);
   var DAYS  = 90;
 
   var ids = [
