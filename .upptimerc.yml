@@ -83,17 +83,18 @@ sites:
     maxResponseTime: 45000
 
 # ── Schedule ──────────────────────────────────────────────────────────────────
-# Monitoring window: 10:00–21:00 UTC+2 (CEST / France summer time)
+# Monitoring window: 10:00–20:00 UTC+2 (CEST / France summer time)
 #   10:00 UTC+2 = 08:00 UTC  →  start hour 8
-#   21:00 UTC+2 = 19:00 UTC  →  last allowed run starts at 18:xx UTC
-#   (hour 19 would run up to 19:57 UTC = 21:57 UTC+2, past the 9 PM cutoff)
-#   So we cap at hour 18: last check at 18:57 UTC = 20:57 UTC+2 ✓
+#   GitHub Actions has a 10-40 min queue delay. The platform shuts down at
+#   ~21:00 UTC+2. To prevent the delayed cron from firing AFTER shutdown and
+#   falsely opening a "down" incident every night, we stop at hour 17 UTC.
+#   Last scheduled run: 17:55 UTC = 19:55 UTC+2 (~8 PM) -> safe buffer
 workflowSchedule:
 
-  uptime: "*/5 8-18 * * *"
+  uptime: "*/5 8-17 * * *"
 
-  staticSite: "*/5 8-18 * * *"
-  summary: "*/5 8-18 * * *"
+  staticSite: "*/5 8-17 * * *"
+  summary: "*/5 8-17 * * *"
 
   graphs: "0 18 * * *"
   responseTime: "0 18 * * *"
@@ -523,14 +524,14 @@ status-website:
     </style>
     <script>
     (function() {
-      // Show "platform is sleeping" banner outside 10:00-21:00 UTC+2
+      // Show "platform is sleeping" banner outside 10:00-21:00 UTC+2 (platform hours)
       function injectSleepBanner() {
         var now = new Date();
         // UTC+2 offset in minutes
         var utc2Minutes = now.getUTCHours() * 60 + now.getUTCMinutes() + 120;
         var dayMinutes  = utc2Minutes % (24 * 60);
         var open  = 10 * 60;  // 10:00
-        var close = 21 * 60;  // 21:00
+        var close = 21 * 60;  // 21:00 (platform hours, monitoring stops at 20:00)
         var isSleeping = dayMinutes < open || dayMinutes >= close;
 
         var banner = document.getElementById('azru-sleep-banner');
@@ -540,7 +541,7 @@ status-website:
           banner.innerHTML =
             '<div id="azru-sleep-dot"></div>' +
             '<span>Platform is sleeping — available 10:00–21:00 UTC+2. ' +
-            'Monitoring paused outside these hours.</span>';
+            'Status monitoring runs 10:00–20:00 UTC+2.</span>';
           // Insert as first child of main, or body if main not found yet
           var main = document.querySelector('main') || document.body;
           main.insertBefore(banner, main.firstChild);
