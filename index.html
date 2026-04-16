@@ -69,7 +69,7 @@ nav {
   padding: 0 24px;
 }
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo img { height: 22px; width: auto; }
+.logo svg { height: 22px; width: auto; }
 .logo span { font-size: 14px; font-weight: 600; letter-spacing: -.03em; color: var(--text); }
 
 /* main */
@@ -242,7 +242,26 @@ footer a:hover { color: var(--accent); }
 
 <nav>
   <a class="logo" href="https://status.azru.cloud">
-    <img src="https://raw.githubusercontent.com/mohrnd/azru-status/master/assets/azru-logo.svg" alt="AZRU">
+    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+      <defs>
+        <linearGradient id="face-l" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#9b93ff"/>
+          <stop offset="100%" stop-color="#6c63ff"/>
+        </linearGradient>
+        <linearGradient id="face-r" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4b44cc"/>
+          <stop offset="100%" stop-color="#302a99"/>
+        </linearGradient>
+        <linearGradient id="face-mid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7b73ef"/>
+          <stop offset="100%" stop-color="#534ab7"/>
+        </linearGradient>
+      </defs>
+      <polygon points="40,6 10,72 40,61" fill="url(#face-l)"/>
+      <polygon points="40,6 70,72 40,61" fill="url(#face-r)"/>
+      <polygon points="10,72 40,61 70,72" fill="url(#face-mid)"/>
+      <line x1="40" y1="6" x2="40" y2="61" stroke="#1a1560" stroke-width="1" opacity="0.5"/>
+    </svg>
     <span>AZRU Status</span>
   </a>
 </nav>
@@ -407,9 +426,6 @@ footer a:hover { color: var(--accent); }
   ];
 
   // ── Render uptime bars (sync, date-based) ─────────────────────────────────
-  // Bars are colored green for dates within the monitoring window.
-  // The final bar (today) is updated to red if the live fetch finds the
-  // service is currently down.
   var TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
   SERVICES.forEach(function (svc) {
@@ -431,7 +447,6 @@ footer a:hover { color: var(--accent); }
       var label = d.getFullYear() + '-' + mm + '-' + dd;
       bar.setAttribute('data-d', label + (isMonitored ? ' · operational' : ' · no data'));
 
-      // Give today's bar an id so the live fetch can update its colour
       if (i === 0) bar.id = 'today-bar-' + svc.slug;
 
       container.appendChild(bar);
@@ -454,26 +469,23 @@ footer a:hover { color: var(--accent); }
 
   // ── Fetch a single service's live status ─────────────────────────────────
   function fetchService(svc) {
-    if (svc.cfProtected) return; // hardcoded — skip fetch
+    if (svc.cfProtected) return;
 
     var histUrl   = RAW + '/history/' + svc.slug + '.yml';
     var uptimeUrl = RAW + '/api/' + svc.slug + '/uptime.json';
 
-    // Fetch history (status + responseTime)
     fetch(histUrl)
       .then(function (r) { return r.text(); })
       .then(function (txt) {
-        var status = parseYamlField(txt, 'status');   // "up" | "down"
+        var status = parseYamlField(txt, 'status');
         var isUp   = status === 'up';
 
-        // Update badge
         var badge = document.getElementById('badge-' + svc.slug);
         if (badge) {
           badge.textContent = isUp ? 'Operational' : 'Down';
           badge.className   = 'badge ' + (isUp ? 'badge-up' : 'badge-down');
         }
 
-        // Update today's bar
         var todayBar = document.getElementById('today-bar-' + svc.slug);
         if (todayBar && !isUp) {
           todayBar.className = 'bar down';
@@ -481,19 +493,15 @@ footer a:hover { color: var(--accent); }
           todayBar.setAttribute('data-d', d + ' · down');
         }
 
-        // Store result for banner update
         svc._isUp = isUp;
         updateBanner();
       })
-      .catch(function () {
-        // Network error — leave badge as loading
-      });
+      .catch(function () {});
 
-    // Fetch uptime %
     fetch(uptimeUrl)
       .then(function (r) { return r.json(); })
       .then(function (data) {
-        var pct = data.message; // e.g. "92.28%"
+        var pct = data.message;
         var el  = document.getElementById('pct-' + svc.slug);
         if (el) {
           el.textContent = pct + ' uptime';
@@ -504,14 +512,12 @@ footer a:hover { color: var(--accent); }
   }
 
   // ── Banner logic ──────────────────────────────────────────────────────────
-  // Runs once after sleep check, then again after each live fetch resolves.
   function updateBanner() {
     var bannerOk    = document.getElementById('banner-ok');
     var bannerDown  = document.getElementById('banner-down');
     var bannerSleep = document.getElementById('banner-sleep');
     var downText    = document.getElementById('banner-down-text');
 
-    // Sleep check — outside 10:00–21:00 UTC+2
     var now     = new Date();
     var dayMin  = ((now.getUTCHours() * 60 + now.getUTCMinutes()) + 120) % 1440;
     var isSleep = dayMin < 600 || dayMin >= 1260;
@@ -523,13 +529,11 @@ footer a:hover { color: var(--accent); }
       return;
     }
 
-    // Count down services (ignore cfProtected ones)
     var downList = SERVICES.filter(function (s) {
       return !s.cfProtected && s._isUp === false;
     });
 
     if (downList.length > 0) {
-      var names = downList.map(function (s) { return s.slug.replace(/-/g, '\u202F'); }).join(', ');
       if (downText) downText.textContent = downList.length + ' service' + (downList.length > 1 ? 's' : '') + ' down';
       bannerDown.style.display  = 'flex';
       bannerOk.style.display    = 'none';
@@ -542,11 +546,10 @@ footer a:hover { color: var(--accent); }
   }
 
   // ── Boot ──────────────────────────────────────────────────────────────────
-  updateBanner(); // run immediately so sleep banner shows without waiting for fetch
+  updateBanner();
 
   SERVICES.forEach(fetchService);
 
-  // Re-check banner every minute (sleep boundary)
   setInterval(updateBanner, 60000);
 
 })();
