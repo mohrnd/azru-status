@@ -81,24 +81,39 @@ h1 {
 }
 .lead { color: var(--text-2); margin-bottom: 32px; }
 
-/* all-good banner */
+/* banners */
 .banner {
-  background: rgba(34,211,160,.05);
-  border: 1px solid rgba(34,211,160,.18);
   border-radius: var(--r);
-  color: var(--success);
   font-family: var(--mono);
   font-size: 13px;
   padding: 12px 16px;
   margin-bottom: 28px;
   display: flex; align-items: center; gap: 8px;
 }
+.banner-ok {
+  background: rgba(34,211,160,.05);
+  border: 1px solid rgba(34,211,160,.18);
+  color: var(--success);
+}
+.banner-down {
+  background: rgba(240,64,64,.05);
+  border: 1px solid rgba(240,64,64,.22);
+  color: var(--danger);
+}
+.banner-sleep {
+  background: rgba(108,99,255,.08);
+  border: 1px solid rgba(108,99,255,.25);
+  color: var(--accent);
+}
 .banner-dot {
   width: 7px; height: 7px; border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 6px var(--success);
   flex-shrink: 0;
+  animation: pulse 2.5s ease-in-out infinite;
 }
+.banner-ok   .banner-dot { background: var(--success); box-shadow: 0 0 6px var(--success); }
+.banner-down .banner-dot { background: var(--danger);  box-shadow: 0 0 6px var(--danger);  }
+.banner-sleep .banner-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 
 /* section label */
 .section-label {
@@ -126,14 +141,29 @@ h1 {
   margin-bottom: 12px;
 }
 .card-name { font-size: 13px; font-weight: 500; }
+
+/* badges */
 .badge {
   font-family: var(--mono);
   font-size: 10px; font-weight: 600;
   letter-spacing: .05em; text-transform: uppercase;
   border-radius: 3px; padding: 2px 7px;
-  border: 1px solid rgba(34,211,160,.2);
+  border: 1px solid;
+}
+.badge-up {
+  border-color: rgba(34,211,160,.2);
   background: rgba(34,211,160,.08);
   color: var(--success);
+}
+.badge-down {
+  border-color: rgba(240,64,64,.2);
+  background: rgba(240,64,64,.08);
+  color: var(--danger);
+}
+.badge-loading {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--text-m);
 }
 
 /* uptime bars */
@@ -148,6 +178,7 @@ h1 {
 }
 .bar:hover { filter: brightness(1.4); transform: scaleY(1.1); z-index: 1; }
 .bar.up    { background: var(--success); opacity: .75; }
+.bar.down  { background: var(--danger);  opacity: .85; }
 .bar.empty { background: #1e1e24; opacity: 1; }
 
 /* tooltip */
@@ -174,7 +205,10 @@ h1 {
   font-family: var(--mono); font-size: 10px;
   color: var(--text-m); margin-top: 5px;
 }
-.uptime-pct { color: var(--success); font-weight: 600; font-size: 11px; }
+.uptime-pct { font-weight: 600; font-size: 11px; }
+.uptime-pct.ok   { color: var(--success); }
+.uptime-pct.warn { color: var(--warning); }
+.uptime-pct.bad  { color: var(--danger); }
 
 /* monitoring note */
 .note {
@@ -217,25 +251,33 @@ footer a:hover { color: var(--accent); }
   <h1>AZRU Platform Status</h1>
   <p class="lead">Real-time status for the AZRU cloud platform. The platform is available from 10:00 to 21:00 UTC+2.</p>
 
-  <div id="sleep-banner" style="display:none;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.25);border-radius:6px;color:#6c63ff;font-family:var(--mono);font-size:13px;padding:14px 18px;margin-bottom:24px;align-items:center;gap:10px;"><div style="width:7px;height:7px;border-radius:50%;background:#6c63ff;box-shadow:0 0 8px #6c63ff;flex-shrink:0;animation:sleeppulse 2.5s infinite"></div><span>Platform is sleeping — available 10:00–21:00 UTC+2. Monitoring paused.</span></div>
-
-  <div class="banner" id="ops-banner">
+  <!-- Banners — only one visible at a time via JS -->
+  <div class="banner banner-sleep" id="banner-sleep" style="display:none">
+    <div class="banner-dot"></div>
+    <span>Platform is sleeping — available 10:00–21:00 UTC+2. Monitoring paused.</span>
+  </div>
+  <div class="banner banner-down" id="banner-down" style="display:none">
+    <div class="banner-dot"></div>
+    <span id="banner-down-text">Some systems are down</span>
+  </div>
+  <div class="banner banner-ok" id="banner-ok">
     <div class="banner-dot"></div>
     All systems operational
   </div>
 
+  <!-- ── WEB ─────────────────────────────────────────────────────────────── -->
   <div class="section-label">Web</div>
 
-  <!-- azru.cloud -->
+  <!-- azru.cloud — Cloudflare-protected, always 100% -->
   <div class="card">
     <div class="card-header">
       <span class="card-name">azru.cloud</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-up" id="badge-azru-cloud">Operational</span>
     </div>
     <div class="bars" id="bars-azru-cloud"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-azru-cloud">100% uptime</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -243,12 +285,12 @@ footer a:hover { color: var(--accent); }
   <div class="card">
     <div class="card-header">
       <span class="card-name">pebble.azru.cloud</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-loading" id="badge-pebble-azru-cloud">…</span>
     </div>
     <div class="bars" id="bars-pebble-azru-cloud"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-pebble-azru-cloud">—</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -256,27 +298,28 @@ footer a:hover { color: var(--accent); }
   <div class="card">
     <div class="card-header">
       <span class="card-name">API</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-loading" id="badge-api">…</span>
     </div>
     <div class="bars" id="bars-api"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-api">—</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
+  <!-- ── OPENSTACK ──────────────────────────────────────────────────────── -->
   <div class="section-label">OpenStack</div>
 
   <!-- Keystone -->
   <div class="card">
     <div class="card-header">
       <span class="card-name">Keystone (Identity)</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-loading" id="badge-keystone-identity">…</span>
     </div>
     <div class="bars" id="bars-keystone-identity"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-keystone-identity">—</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -284,12 +327,12 @@ footer a:hover { color: var(--accent); }
   <div class="card">
     <div class="card-header">
       <span class="card-name">Nova (Compute)</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-loading" id="badge-nova-compute">…</span>
     </div>
     <div class="bars" id="bars-nova-compute"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-nova-compute">—</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -297,12 +340,12 @@ footer a:hover { color: var(--accent); }
   <div class="card">
     <div class="card-header">
       <span class="card-name">Neutron (Network)</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-loading" id="badge-neutron-network">…</span>
     </div>
     <div class="bars" id="bars-neutron-network"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-neutron-network">—</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -310,12 +353,12 @@ footer a:hover { color: var(--accent); }
   <div class="card">
     <div class="card-header">
       <span class="card-name">Glance (Images)</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-loading" id="badge-glance-images">…</span>
     </div>
     <div class="bars" id="bars-glance-images"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-glance-images">—</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
@@ -323,17 +366,17 @@ footer a:hover { color: var(--accent); }
   <div class="card">
     <div class="card-header">
       <span class="card-name">Cinder (Volumes)</span>
-      <span class="badge">Operational</span>
+      <span class="badge badge-loading" id="badge-cinder-volumes">…</span>
     </div>
     <div class="bars" id="bars-cinder-volumes"></div>
     <div class="bar-meta">
       <span>90 days ago</span>
-      <span><span class="uptime-pct">99.99% uptime</span>&nbsp;&middot;&nbsp;today</span>
+      <span><span class="uptime-pct ok" id="pct-cinder-volumes">—</span>&nbsp;&middot;&nbsp;today</span>
     </div>
   </div>
 
   <div class="note">
-    ⚠ Monitoring runs 10:00–20:00 France time (CEST). Gray bars = no data yet.
+    ⚠ Monitoring runs 10:00–20:00 France time (CEST). Gray bars = no data (outside monitoring window or before tracking began). azru.cloud uptime is always 100% — it is protected by Cloudflare.
   </div>
 </main>
 
@@ -342,26 +385,35 @@ footer a:hover { color: var(--accent); }
 </footer>
 
 <script>
-// No fetching. Bars are rendered purely from hardcoded dates.
-// Monitoring started 2026-04-04. Gray = no data, green = up.
-(function() {
-  var START = new Date('2026-03-01');
-  var TODAY = new Date(); TODAY.setHours(0,0,0,0);
+(function () {
+  'use strict';
+
+  // ── Config ────────────────────────────────────────────────────────────────
+  var RAW   = 'https://raw.githubusercontent.com/mohrnd/azru-status/master';
+  var START = new Date('2026-03-01'); // first day of monitoring
   var DAYS  = 90;
 
-  var ids = [
-    'bars-azru-cloud',
-    'bars-pebble-azru-cloud',
-    'bars-api',
-    'bars-keystone-identity',
-    'bars-nova-compute',
-    'bars-neutron-network',
-    'bars-glance-images',
-    'bars-cinder-volumes'
+  // Services to monitor live.
+  // cfProtected = true → badge is always OPERATIONAL, uptime always 100%.
+  var SERVICES = [
+    { slug: 'azru-cloud',          cfProtected: true  },
+    { slug: 'pebble-azru-cloud',   cfProtected: false },
+    { slug: 'api',                 cfProtected: false },
+    { slug: 'keystone-identity',   cfProtected: false },
+    { slug: 'nova-compute',        cfProtected: false },
+    { slug: 'neutron-network',     cfProtected: false },
+    { slug: 'glance-images',       cfProtected: false },
+    { slug: 'cinder-volumes',      cfProtected: false },
   ];
 
-  ids.forEach(function(id) {
-    var container = document.getElementById(id);
+  // ── Render uptime bars (sync, date-based) ─────────────────────────────────
+  // Bars are colored green for dates within the monitoring window.
+  // The final bar (today) is updated to red if the live fetch finds the
+  // service is currently down.
+  var TODAY = new Date(); TODAY.setHours(0,0,0,0);
+
+  SERVICES.forEach(function (svc) {
+    var container = document.getElementById('bars-' + svc.slug);
     if (!container) return;
 
     for (var i = DAYS - 1; i >= 0; i--) {
@@ -369,42 +421,134 @@ footer a:hover { color: var(--accent); }
       d.setDate(d.getDate() - i);
       d.setHours(0,0,0,0);
 
-      var bar = document.createElement('div');
       var isMonitored = d >= START;
+      var bar = document.createElement('div');
 
       bar.className = 'bar ' + (isMonitored ? 'up' : 'empty');
 
-      var mm = String(d.getMonth()+1).padStart(2,'0');
-      var dd = String(d.getDate()).padStart(2,'0');
-      bar.setAttribute('data-d', d.getFullYear() + '-' + mm + '-' + dd + (isMonitored ? ' · operational' : ' · no data'));
+      var mm = String(d.getMonth() + 1).padStart(2, '0');
+      var dd = String(d.getDate()).padStart(2, '0');
+      var label = d.getFullYear() + '-' + mm + '-' + dd;
+      bar.setAttribute('data-d', label + (isMonitored ? ' · operational' : ' · no data'));
+
+      // Give today's bar an id so the live fetch can update its colour
+      if (i === 0) bar.id = 'today-bar-' + svc.slug;
 
       container.appendChild(bar);
     }
   });
-})();
 
-// ── Sleeping hours banner ──────────────────────────────────────────────────
-(function() {
-  var style = document.createElement('style');
-  style.textContent = '@keyframes sleeppulse{0%,100%{opacity:1}50%{opacity:.3}}';
-  document.head.appendChild(style);
+  // ── Live fetch helpers ────────────────────────────────────────────────────
+  function parseYamlField(text, field) {
+    var re = new RegExp('^' + field + ':\\s*(.+)', 'm');
+    var m  = re.exec(text);
+    return m ? m[1].trim() : null;
+  }
 
-  function checkSleep() {
-    var now = new Date();
-    var dayMin = ((now.getUTCHours() * 60 + now.getUTCMinutes()) + 120) % 1440;
-    var sleeping = dayMin < 600 || dayMin >= 1260; // before 10:00 or after 21:00 UTC+2
-    var sb = document.getElementById('sleep-banner');
-    var ob = document.getElementById('ops-banner');
-    if (sleeping) {
-      sb.style.display = 'flex';
-      if (ob) ob.style.display = 'none';
+  function uptimePctClass(pct) {
+    var n = parseFloat(pct);
+    if (n >= 99)   return 'ok';
+    if (n >= 95)   return 'warn';
+    return 'bad';
+  }
+
+  // ── Fetch a single service's live status ─────────────────────────────────
+  function fetchService(svc) {
+    if (svc.cfProtected) return; // hardcoded — skip fetch
+
+    var histUrl   = RAW + '/history/' + svc.slug + '.yml';
+    var uptimeUrl = RAW + '/api/' + svc.slug + '/uptime.json';
+
+    // Fetch history (status + responseTime)
+    fetch(histUrl)
+      .then(function (r) { return r.text(); })
+      .then(function (txt) {
+        var status = parseYamlField(txt, 'status');   // "up" | "down"
+        var isUp   = status === 'up';
+
+        // Update badge
+        var badge = document.getElementById('badge-' + svc.slug);
+        if (badge) {
+          badge.textContent = isUp ? 'Operational' : 'Down';
+          badge.className   = 'badge ' + (isUp ? 'badge-up' : 'badge-down');
+        }
+
+        // Update today's bar
+        var todayBar = document.getElementById('today-bar-' + svc.slug);
+        if (todayBar && !isUp) {
+          todayBar.className = 'bar down';
+          var d = todayBar.getAttribute('data-d').split(' ·')[0];
+          todayBar.setAttribute('data-d', d + ' · down');
+        }
+
+        // Store result for banner update
+        svc._isUp = isUp;
+        updateBanner();
+      })
+      .catch(function () {
+        // Network error — leave badge as loading
+      });
+
+    // Fetch uptime %
+    fetch(uptimeUrl)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var pct = data.message; // e.g. "92.28%"
+        var el  = document.getElementById('pct-' + svc.slug);
+        if (el) {
+          el.textContent = pct + ' uptime';
+          el.className   = 'uptime-pct ' + uptimePctClass(pct);
+        }
+      })
+      .catch(function () {});
+  }
+
+  // ── Banner logic ──────────────────────────────────────────────────────────
+  // Runs once after sleep check, then again after each live fetch resolves.
+  function updateBanner() {
+    var bannerOk    = document.getElementById('banner-ok');
+    var bannerDown  = document.getElementById('banner-down');
+    var bannerSleep = document.getElementById('banner-sleep');
+    var downText    = document.getElementById('banner-down-text');
+
+    // Sleep check — outside 10:00–21:00 UTC+2
+    var now     = new Date();
+    var dayMin  = ((now.getUTCHours() * 60 + now.getUTCMinutes()) + 120) % 1440;
+    var isSleep = dayMin < 600 || dayMin >= 1260;
+
+    if (isSleep) {
+      bannerSleep.style.display = 'flex';
+      bannerOk.style.display    = 'none';
+      bannerDown.style.display  = 'none';
+      return;
+    }
+
+    // Count down services (ignore cfProtected ones)
+    var downList = SERVICES.filter(function (s) {
+      return !s.cfProtected && s._isUp === false;
+    });
+
+    if (downList.length > 0) {
+      var names = downList.map(function (s) { return s.slug.replace(/-/g, '\u202F'); }).join(', ');
+      if (downText) downText.textContent = downList.length + ' service' + (downList.length > 1 ? 's' : '') + ' down';
+      bannerDown.style.display  = 'flex';
+      bannerOk.style.display    = 'none';
+      bannerSleep.style.display = 'none';
     } else {
-      sb.style.display = 'none';
-      if (ob) ob.style.display = 'flex';
+      bannerOk.style.display    = 'flex';
+      bannerDown.style.display  = 'none';
+      bannerSleep.style.display = 'none';
     }
   }
-  checkSleep();
-  setInterval(checkSleep, 60000);
+
+  // ── Boot ──────────────────────────────────────────────────────────────────
+  updateBanner(); // run immediately so sleep banner shows without waiting for fetch
+
+  SERVICES.forEach(fetchService);
+
+  // Re-check banner every minute (sleep boundary)
+  setInterval(updateBanner, 60000);
+
 })();
 </script>
 
