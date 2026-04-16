@@ -1,7 +1,7 @@
 url: https://pebble.azru.cloud
-status: up
-code: 200
-responseTime: 409
-lastUpdated: 2026-04-16T10:24:18.288Z
+status: down
+code: 530
+responseTime: 125
+lastUpdated: 2026-04-16T19:06:44.373Z
 startTime: 2026-03-01T10:00:00.000Z
 generator: Upptime <https://github.com/upptime/upptime>
