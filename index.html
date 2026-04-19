@@ -472,7 +472,9 @@ footer a:hover { color: var(--accent); }
     if (svc.cfProtected) return;
 
     var histUrl   = RAW + '/history/' + svc.slug + '.yml';
-    var uptimeUrl = RAW + '/api/' + svc.slug + '/uptime.json';
+    // uptime-day.json = today's uptime (100% when platform is operating normally).
+    // uptime.json = all-time cumulative — drags down due to off-hours monitoring.
+    var uptimeUrl = RAW + '/api/' + svc.slug + '/uptime-day.json';
 
     fetch(histUrl)
       .then(function (r) { return r.text(); })
