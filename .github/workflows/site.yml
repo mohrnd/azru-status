@@ -2,10 +2,6 @@
 # ===============================
 # CUSTOMIZED — do not let update-template overwrite this
 # ===============================
-#
-# Deploys the hand-crafted index.html directly to GitHub Pages.
-# We intentionally do NOT run Upptime's site generator here because it
-# overwrites our custom page with the default Upptime Sapper template.
 
 name: Static Site CI
 on:
@@ -33,6 +29,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/index.html
+          echo "status.azru.cloud" > _site/CNAME
 
       - uses: peaceiris/actions-gh-pages@v4
         name: GitHub Pages Deploy
