@@ -1,7 +1,7 @@
 url: https://pebble.azru.cloud/api/v1/status/nova
-status: up
-code: 200
-responseTime: 2156
-lastUpdated: 2026-05-07T10:23:20.364Z
+status: down
+code: 530
+responseTime: 6
+lastUpdated: 2026-05-07T19:48:42.267Z
 startTime: 2026-03-01T10:00:00.000Z
 generator: Upptime <https://github.com/upptime/upptime>
