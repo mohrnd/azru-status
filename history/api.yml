@@ -1,7 +1,7 @@
 url: https://pebble.azru.cloud/api/v1/health/ping
-status: down
-code: 530
-responseTime: 5
-lastUpdated: 2026-05-07T19:48:38.524Z
+status: up
+code: 200
+responseTime: 188
+lastUpdated: 2026-05-08T09:19:17.631Z
 startTime: 2026-03-01T10:00:00.000Z
 generator: Upptime <https://github.com/upptime/upptime>
