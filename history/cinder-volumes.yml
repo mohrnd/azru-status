@@ -1,7 +1,7 @@
 url: https://pebble.azru.cloud/api/v1/status/cinder
-status: down
-code: 530
-responseTime: 8
-lastUpdated: 2026-05-16T19:15:07.099Z
+status: up
+code: 200
+responseTime: 6044
+lastUpdated: 2026-05-17T09:46:14.958Z
 startTime: 2026-03-01T10:00:00.000Z
 generator: Upptime <https://github.com/upptime/upptime>
